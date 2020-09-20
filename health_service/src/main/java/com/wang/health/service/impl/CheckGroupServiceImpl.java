@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @Email:summer_6121@163.com
  */
 
-@Service
+@Service(interfaceClass = CheckGroupService.class)
 public class CheckGroupServiceImpl implements CheckGroupService {
     
     @Autowired

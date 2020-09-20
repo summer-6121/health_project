@@ -16,6 +16,13 @@ public interface CheckGroupDao {
      * @return
      */
     Page<CheckGroup> findPage(String queryString);
+    
+
+    /**
+     * 添加检查组
+     * @param checkGroup
+     */
+    void add(CheckGroup checkGroup);
 
     /**
      * 添加检查组和检查项的关系   事务控制
@@ -23,11 +30,6 @@ public interface CheckGroupDao {
      * @param checkitemId
      * @return
      */
-    void addCheckGroupCheckItem(Integer checkGroupId, Integer checkitemId);
 
-    /**
-     * 添加检查组
-     * @param checkGroup
-     */
-    void add(CheckGroup checkGroup);
+    void addCheckGroupCheckItem(Integer checkGroupId, Integer checkitemId);
 }
