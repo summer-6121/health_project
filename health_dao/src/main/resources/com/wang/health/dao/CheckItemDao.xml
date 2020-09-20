@@ -3,7 +3,52 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wang.health.dao.CheckItemDao">
+    <!--查询检查项所有-->
     <select id="findAll" resultType="CheckItem">
         select * From t_checkitem
     </select>
+    
+    <!--新增检查项-->
+    <insert id="add">
+        insert into t_checkitem(code,name,sex,age,price,type,remark,attention)
+        values
+        (#{code},#{name},#{sex},#{age},#{price},#{type},#{remark},#{attention})
+    </insert>
+    
+    <!--根据条件查询-->
+    <select id="findByCondition" parameterType="string" resultType="CheckItem">
+        select * from t_checkitem
+        <if test="value != null and value.length > 0">
+            where code like #{value} or name like #{value}
+        </if>
+    </select>
+    
+    <!--验证检查项是否被检查组使用-->
+    <select id="findCountByCheckItemId" parameterType="int" resultType="int">
+        select count(0) from t_checkgroup_checkitem where checkitem_id = #{id}
+    </select>
+    <!--然后进行删除-->
+    <delete id="deleteById">
+        delete from t_checkitem where id = #{id}
+    </delete>
+    
+    <!--根据id查询检查项，回显数据-->
+    <select id="findById" resultType="CheckItem">
+        select * from t_checkitem where id = #{id}
+    </select>
+    
+    <!--更新检查项-->
+    <update id="update" parameterType="CheckItem">
+      update t_checkitem
+      set
+          code=#{code},
+          name=#{name},
+          sex=#{sex},
+          age=#{age},
+          price=#{price},
+          type=#{type},
+          remark=#{remark},
+          attention=#{attention}
+      where id=#{id}
+    </update>
 </mapper>
