@@ -2,6 +2,7 @@ package com.wang.health.dao;
 
 import com.github.pagehelper.Page;
 import com.wang.health.pojo.CheckGroup;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @Author:WangLiPeng
@@ -31,5 +32,5 @@ public interface CheckGroupDao {
      * @return
      */
 
-    void addCheckGroupCheckItem(Integer checkGroupId, Integer checkitemId);
+    void addCheckGroupCheckItem(@Param("checkGroupId") Integer checkGroupId, @Param("checkitemId") Integer checkitemId);
 }
