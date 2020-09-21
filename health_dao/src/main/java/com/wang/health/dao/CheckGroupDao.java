@@ -2,7 +2,10 @@ package com.wang.health.dao;
 
 import com.github.pagehelper.Page;
 import com.wang.health.pojo.CheckGroup;
+import com.wang.health.pojo.CheckItem;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @Author:WangLiPeng
@@ -33,4 +36,43 @@ public interface CheckGroupDao {
      */
 
     void addCheckGroupCheckItem(@Param("checkGroupId") Integer checkGroupId, @Param("checkitemId") Integer checkitemId);
+
+    /**
+     * 通过检查组的id查询数据进行回显
+     * @param id
+     * @return
+     */
+    CheckGroup findById(int id);
+
+    /**
+     * 通过检查组的id查询  选中  的检查项
+     * @param id
+     * @return
+     */
+    List<Integer> findCheckItemIdsByCheckGroupId(int id);
+
+    /**
+     * 更新检查组的信息（修改）
+     * @param checkGroup
+     */
+    void update(CheckGroup checkGroup);
+
+    /**
+     * 重新建立检查组和检查项之间的关系
+     * @param id
+     */
+    void deleteCheckGroupCheckItem(Integer id);
+
+    /**
+     * 检查id对应的检查组是否被套餐使用
+     * @param id
+     * @return
+     */
+    int findSetmealCountByCheckGroupId(Integer id);
+
+    /**
+     * 删除检查组
+     * @param id
+     */
+    void deleteById(Integer id);
 }

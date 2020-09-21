@@ -5,7 +5,7 @@ import com.wang.health.entity.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @Author:WangLiPeng
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 全局异常处理
  */
-@RestController
+@RestControllerAdvice
 public class HealthExceptionAdvice {
     /**
      * info：打印日志，记录流程性的内容
@@ -34,6 +34,7 @@ public class HealthExceptionAdvice {
      */
     @ExceptionHandler(HealthException.class)
     public Result handleHealthException(HealthException e){
+        log.error("违反业务逻辑",e);
         return new Result(false,e.getMessage());
     }
 

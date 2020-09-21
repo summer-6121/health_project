@@ -4,13 +4,17 @@ import com.alibaba.druid.util.StringUtils;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.wang.exception.HealthException;
 import com.wang.health.dao.CheckGroupDao;
 import com.wang.health.entity.PageResult;
 import com.wang.health.entity.QueryPageBean;
 import com.wang.health.pojo.CheckGroup;
+import com.wang.health.pojo.CheckItem;
 import com.wang.health.service.CheckGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @Author:WangLiPeng
@@ -66,5 +70,68 @@ public class CheckGroupServiceImpl implements CheckGroupService {
                 checkGroupDao.addCheckGroupCheckItem(checkGroupId,checkitemId);
             }
         }
+    }
+
+    /**
+     * 通过检查组的id查询数据进行回显
+     * @param id
+     * @return
+     */
+    @Override
+    public CheckGroup findById(int id) {
+        return checkGroupDao.findById(id);
+    }
+
+    /**
+     * 通过检查组的id查询  选中  的检查项
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Integer> findCheckItemIdsByCheckGroupId(int id) {
+        return checkGroupDao.findCheckItemIdsByCheckGroupId(id);
+    }
+
+    /**
+     * 修改检查组信息以及选中的检查项信息
+     * @param checkGroup
+     * @param checkitemIds
+     * @return
+     */
+    @Override
+    public void update(CheckGroup checkGroup, Integer[] checkitemIds) {
+        //先更新检查组
+        checkGroupDao.update(checkGroup);
+        //删除旧关系(检查项和检查组的关系)
+        checkGroupDao.deleteCheckGroupCheckItem(checkGroup.getId());
+        //建立新关系
+        if (null != checkitemIds){
+            for (Integer checkitemId : checkitemIds) {
+                checkGroupDao.addCheckGroupCheckItem(checkGroup.getId(),checkitemId);
+            }
+        }
+        
+    }
+
+    /**
+     * 删除检查组
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional
+    public void deleteById(Integer id) throws HealthException {
+        //先检查id对应的检查组是否被套餐使用
+        int rows = checkGroupDao.findSetmealCountByCheckGroupId(id);
+        if (rows > 0){
+            //被使用了
+            throw new HealthException("此检查组被套餐使用，无法删除！");
+        }
+        //没有被套餐使用，可以删除
+        
+        //先删除检查组和检查项的关系
+        checkGroupDao.deleteCheckGroupCheckItem(id);
+        //删除检查组
+        checkGroupDao.deleteById(id);
     }
 }
