@@ -58,4 +58,10 @@ public interface CheckGroupService {
      * @return
      */
     void deleteById(Integer id) throws HealthException;
+
+    /**
+     * 获取所有检查组列表数据，绑定到tableData
+     * @return
+     */
+    List<CheckGroup> findAll();
 }

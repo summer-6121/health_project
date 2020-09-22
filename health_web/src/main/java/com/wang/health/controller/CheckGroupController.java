@@ -93,4 +93,14 @@ public class CheckGroupController {
         checkGroupService.deleteById(id);
         return new Result(true,MessageConstant.DELETE_CHECKGROUP_SUCCESS);
     }
+
+    /**
+     * 获取所有检查组列表数据，绑定到tableData
+     * @return
+     */
+    @GetMapping("findAll")
+    public Result findAll(){
+        List<CheckGroup> checkGroupList = checkGroupService.findAll();
+        return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroupList);
+    }
 }

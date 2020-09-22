@@ -75,4 +75,10 @@ public interface CheckGroupDao {
      * @param id
      */
     void deleteById(Integer id);
+
+    /**
+     * 获取所有检查组列表数据，绑定到tableData
+     * @return
+     */
+    List<CheckGroup> findAll();
 }
