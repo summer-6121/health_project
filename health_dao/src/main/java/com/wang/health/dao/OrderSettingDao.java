@@ -1,8 +1,11 @@
 package com.wang.health.dao;
 
 import com.wang.health.pojo.OrderSetting;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:WangLiPeng
@@ -28,4 +31,12 @@ public interface OrderSettingDao {
      * @param orderSetting
      */
     void add(OrderSetting orderSetting);
+
+    /**
+     * 通过年份和月份查询预约设置信息
+     * @param strDate
+     * @param endDate
+     * @return
+     */
+    List<Map<String,Integer>> getOrderSettingByMonth(@Param("startDate") String strDate, @Param("endDate") String endDate);
 }

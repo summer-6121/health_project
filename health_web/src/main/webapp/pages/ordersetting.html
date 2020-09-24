@@ -136,10 +136,67 @@
             },
             created: function () {//在vue初始化时调用
                 this.initData(null);
+                //通过月份获取预约设置信息
+                this.getDataByMonth();
             },
             methods: {
+                //通过月份获取预约设置信息
+                getDataByMonth(){
+                    // 获取月份(月份小于10就在数字前面加 0 ，然后拼接)
+                    let month = (this.currentMonth < 10 ) ? "0" : "";
+                    month += this.currentMonth;
+                    //获取年份
+                    var yearMonth = this.currentYear + "-" + month;
+                    axios.get("/ordersetting/getOrderSettingByMonth.do?month=" + yearMonth).then(response => {
+                        this.$message({
+                            message:response.data.message,
+                            type:response.data.flag ? 'success' : 'error'
+                        });
+                        if (response.data.flag) {
+                            //把查询到的数据绑定到leftobj
+                            this.leftobj = response.data.data;
+                        }
+                    });
+                },
+                
 				//预约设置
-                handleOrderSet(day){
+                handleOrderSet(date){
+                    //日期格式化
+                    //alert(this.formatDate(date.getFullYear(), date.getMonth() + 1, date.getDate()));
+                    this.$prompt('请输入最大预约数量', '预约设置', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        //邮箱验证的正则
+                        //inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+                        inputPattern: /^[1-9]\d{0,2}$/,
+                        inputErrorMessage: '数量范围为1-999'
+                    }).then(({ value }) => {
+                        //格式化日期
+                        // alert(value);
+                        var orderDate = this.formatDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+                        var number = value;
+                        //esca6的简化写法
+                        //变量名为key，变量的值为value
+                        var submitData = {orderDate,number};
+                        //发请求
+                        axios.post("/ordersetting/editNumberByDate.do",submitData).then(response => {
+                            this.$message({
+                                message:response.data.message,
+                                type:response.data.flag ? 'success' : 'error'
+                            });
+                            if (response.data.flag) {
+                                //刷新日历
+                                this.getDataByMonth();
+                            }
+                        })
+                    }).catch(() => {
+                        //取消提示
+                        /*this.$message({
+                            type: 'info',
+                            message: '取消输入'
+                        });*/
+                    });
+                    
                 },
 				//上传之前进行文件格式校验
                 beforeUpload(file){
@@ -165,6 +222,8 @@
                             message: response.message,
                             type: 'success'
                         });
+                        //刷新列表
+                        this.getDataByMonth();
                     }else{
                         this.$message.error(response.message);
                     }
@@ -236,11 +295,14 @@
                         { date: 6, number: 120, reservations: 1 },
                         { date: 8, number: 120, reservations: 1 }
                     ];*/
+                    
                 },
 				//切换到当前月份
                 goCurrentMonth: function (year, month) {
                     var d = new Date();
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                    //刷新列表
+                    this.getDataByMonth()
                 },
 				//向前一个月
                 pickPre: function (year, month) {
@@ -250,12 +312,16 @@
                     var d = new Date(this.formatDate(year, month, 1));
                     d.setDate(0);
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                    //刷新列表
+                    this.getDataByMonth()
                 },
 				//向后一个月
                 pickNext: function (year, month) {
                     var d = new Date(this.formatDate(year, month, 1));
                     d.setDate(35);////获取指定天之后的日期
                     this.initData(this.formatDate(d.getFullYear(), d.getMonth() + 1, 1));
+                    //刷新列表
+                    this.getDataByMonth()
                 },
                 // 返回 类似 2016-01-02 格式的字符串
                 formatDate: function (year, month, day) {

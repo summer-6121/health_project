@@ -3,14 +3,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wang.health.dao.OrderSettingDao">
+    
+    <!--通过日期查询预约设置信息-->
+        <!--/*select * from t_ordersetting where orderDate = #{orderDate,jdbcType=DATE}*/-->
     <select id="findByOrderDate" parameterType="date" resultType="Ordersetting">
-        select * from t_ordersetting where orderDate = #{orderDate,jdbcType=DATE}
+        select * from t_ordersetting where orderDate = #{orderDate}
     </select>
+    <!--通过日期更新最大的设置数量-->
+        <!--/*update t_ordersetting set number = #{number} where orderDate = #{orderDate,jdbcType=DATE}*/-->
     <update id="updateNumber" parameterType="ordersetting">
-        update t_ordersetting set number = #{number} where orderDate = #{orderDate,jdbcType=DATE}
+        update t_ordersetting set number = #{number} where orderDate = #{orderDate}
     </update>
+    <!--插入预约设置-->
     <insert id="add" parameterType="ordersetting">
         insert into t_ordersetting (orderDate, number, reservations)
         values(#{orderDate}, #{number}, #{reservations})
     </insert>
+    
+    <!--通过年份和月份查询预约设置信息-->
+    <select id="getOrderSettingByMonth" parameterType="String" resultType="map">
+        select CAST(DATE_FORMAT(orderdate,'%d') as SIGNED) date,
+            number,
+            reservations
+        from t_ordersetting
+        where orderDate between #{startDate} and #{endDate}
+    </select>
+    
 </mapper>
