@@ -1,4 +1,4 @@
-package com.wang.utils;
+package com.wang.health.constant;
 
 public interface RedisMessageConstant {
     static final String SENDTYPE_ORDER = "001";//用于缓存体检预约时发送的验证码

@@ -8,8 +8,13 @@ import com.wang.health.entity.Result;
 import com.wang.health.pojo.Setmeal;
 import com.wang.health.service.SetmealService;
 import com.wang.utils.QiNiuUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,9 +32,14 @@ import java.util.UUID;
 @RequestMapping("/setmeal")
 public class SetmealController {
     
+    private static final Logger log = LoggerFactory.getLogger(SetmealController.class);
+    
     //订阅
     @Reference
     private SetmealService setmealService;
+    
+    @Autowired
+    private JedisPool jedisPool;
     
     //步骤：
     //1.获取原有图片的名称，截取得到像.jpg的后缀名
@@ -55,7 +65,8 @@ public class SetmealController {
             map.put("domain",QiNiuUtils.DOMAIN);
             return new Result(true,MessageConstant.PIC_UPLOAD_SUCCESS,map);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            log.error("上传图片失败",e);
         }
         
         return new Result(false,MessageConstant.PIC_UPLOAD_FAIL);
@@ -69,7 +80,12 @@ public class SetmealController {
      */
     @PostMapping("add")
     public Result add(@RequestBody Setmeal setmeal, Integer[] checkgroupIds){
-        setmealService.add(setmeal,checkgroupIds);
+        Integer setmealId = setmealService.add(setmeal,checkgroupIds);
+        // 添加redis生成静态页面的任务
+        Jedis jedis = jedisPool.getResource();
+        String key = "setmeal:static:html";
+        jedis.sadd(key, setmealId+"|1|" + System.currentTimeMillis());
+        jedis.close();
         return new Result(true,MessageConstant.ADD_SETMEAL_SUCCESS);
     }
 
@@ -116,6 +132,10 @@ public class SetmealController {
     @PostMapping("update")
     public Result update(@RequestBody Setmeal setmeal,Integer[] checkgroupIds){
         setmealService.update(setmeal,checkgroupIds);
+        Jedis jedis = jedisPool.getResource();
+        String key = "setmeal:static:html";
+        jedis.sadd(key, setmeal.getId()+"|1|" + System.currentTimeMillis());
+        jedis.close();
         return new Result(true,MessageConstant.EDIT_SETMEAL_SUCCESS);
     }
 
@@ -127,6 +147,10 @@ public class SetmealController {
     @GetMapping("delete")
     public Result delete(int id){
         setmealService.delete(id);
+        Jedis jedis = jedisPool.getResource();
+        String key = "setmeal:static:html";
+        jedis.sadd(key, id+"|0|" + System.currentTimeMillis());
+        jedis.close();
         return new Result(true,MessageConstant.DELETE_SETMEAL_SUCCESS);
     }
 }

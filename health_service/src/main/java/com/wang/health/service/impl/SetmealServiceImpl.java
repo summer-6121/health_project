@@ -37,7 +37,7 @@ public class SetmealServiceImpl implements SetmealService {
      */
     @Override
     @Transactional
-    public void add(Setmeal setmeal, Integer[] checkgroupIds)throws HealthException {
+    public Integer add(Setmeal setmeal, Integer[] checkgroupIds)throws HealthException {
         //添加套餐信息
         setmealDao.add(setmeal);
         //获取套餐的id
@@ -48,6 +48,7 @@ public class SetmealServiceImpl implements SetmealService {
                 setmealDao.addSetmealCheckGroup(setmealId, checkgroupId);
             }
         }
+        return setmealId;
     }
 
     /**

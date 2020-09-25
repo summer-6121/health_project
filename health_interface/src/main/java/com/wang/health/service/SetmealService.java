@@ -20,7 +20,7 @@ public interface SetmealService {
      * @param checkgroupIds
      * @return
      */
-    void add(Setmeal setmeal, Integer[] checkgroupIds) throws HealthException;
+    Integer add(Setmeal setmeal, Integer[] checkgroupIds) throws HealthException;
 
     /**
      * 套餐信息分页查询
