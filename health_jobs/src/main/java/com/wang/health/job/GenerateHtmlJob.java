@@ -68,9 +68,9 @@ public class GenerateHtmlJob {
     public void doGenerateHtml(){
         // 获取redis连接对象
         Jedis jedis = jedisPool.getResource();
-        // redis中set集合的key
-        String key = "static:setmeal:html";
-        // 获取集合中所有的套餐id数据
+        // redis中的key
+        String key = "setmeal:static:html";
+        // 获取集合中所有的套餐id
         Set<String> setmealIds = jedis.smembers(key);
         if(null != setmealIds && setmealIds.size() > 0){
             // 有数据则需要处理
@@ -98,7 +98,7 @@ public class GenerateHtmlJob {
                         //Template template = configuration.getTemplate("mobile_setmeal_detail.ftl");
                         //输出目录
                         String filename = String.format("%s/setmeal_%d.html",out_put_path,setmealDetail.getId());
-
+                        //生成页面
                         generateHtml("mobile_setmeal_detail.ftl",filename,dataMap);
                         //删除对应套餐的id
                         jedis.srem(key,setmealId);
@@ -140,7 +140,7 @@ public class GenerateHtmlJob {
         dataMap.put("setmealList",setmealList);
         
         
-        // 生成文件
+        // 生成页面
         generateHtml(templateName, filename, dataMap);
     }
     /**
