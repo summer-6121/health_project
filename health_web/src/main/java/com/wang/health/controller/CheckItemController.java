@@ -7,6 +7,7 @@ import com.wang.health.entity.QueryPageBean;
 import com.wang.health.entity.Result;
 import com.wang.health.pojo.CheckItem;
 import com.wang.health.service.CheckItemService;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class CheckItemController {
      * 新增检查项
      */
     @PostMapping("/add")
+    @PostAuthorize("hasAnyAuthority('CHECKITEM_ADD')")
     public Result add(@RequestBody CheckItem checkItem){
         checkItemService.add(checkItem);
         return new Result(true,MessageConstant.ADD_CHECKITEM_SUCCESS);
