@@ -53,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
         } catch (ParseException e) {
             throw new HealthException("日期格式不正确，请选择正确日期！");
         }
+        //通过前端传过来的日期查询当前日期的预约信息
         OrderSetting orderSetting = orderSettingDao.findByOrderDate(orderDate);
         //判断当前日期是否可以预约，如果不存在就报错
         if (orderSetting == null) {
@@ -114,5 +115,15 @@ public class OrderServiceImpl implements OrderService {
         }
         //返回新添加的订单对象
         return order;
-    } 
+    }
+
+    /**
+     * 通过订单id找到会员id的信息
+     * @param id
+     * @return
+     */
+    @Override
+    public Map<String, String> findOrderDetailById(int id) {
+        return orderDao.findById4Detail(id);
+    }
 }

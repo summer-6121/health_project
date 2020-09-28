@@ -17,4 +17,11 @@ public interface OrderService {
      * @return
      */
     Order submit(Map<String,String> orderInfo) throws HealthException;
+
+    /**
+     * 通过订单id找到会员id的信息
+     * @param id
+     * @return
+     */
+    Map<String,String> findOrderDetailById(int id);
 }

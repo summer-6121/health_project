@@ -24,7 +24,7 @@ public interface OrderDao {
      * @param id
      * @return
      */
-    Map findById4Detail(Integer id);
+    Map<String, String> findById4Detail(Integer id);
 
     /**
      * 某个日期的预约数量

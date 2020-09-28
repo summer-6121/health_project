@@ -65,4 +65,15 @@ public class OrderController {
         //4. 返回订单信息给页面
         return new Result(true,MessageConstant.ORDERSETTING_SUCCESS,order);
     }
+
+    /**
+     * 通过订单id找到会员id的信息
+     * @param id
+     * @return
+     */
+    @PostMapping("/findById")
+    public Result findById(int id){
+        Map<String,String> orderInfo = orderService.findOrderDetailById(id);
+        return new Result(true,MessageConstant.QUERY_ORDER_SUCCESS,orderInfo);
+    }
 }
