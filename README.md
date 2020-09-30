@@ -1,3 +1,5 @@
+
+点击star，不迷路！
 # 传智健康项目
 
 #### 介绍
@@ -5,4 +7,21 @@
 
 稍后更新更详细的内容，敬请期待！
 
-点击star，不迷路！
+安装环境：（必须）
+jdk8、zookeeper、dubbo、redis、MySQL、tomcat、idea
+
+数据库数据需自行导入！！！
+
+测试：
+1.后台管理系统
+① 开启zookeeper服务
+② 启动service包下ServiceApplication主函数
+③ 配置Tomcat，启动
+④ 成功访问
+2.移动端
+① 开启zookeeper服务
+② 开启Redis服务
+③ 启动service包下ServiceApplication主函数
+④ 配置Tomcat，启动
+⑤ 成功访问
+

@@ -56,22 +56,22 @@
 
     <!--根据日期统计预约数-->
     <select id="findOrderCountByDate" parameterType="string" resultType="int">
-        select count(id) from t_order where orderDate = #{value}
+        select count(2) from t_order where orderDate = #{value}
     </select>
 
     <!--根据日期统计预约数，统计指定日期之后的预约数-->
     <select id="findOrderCountAfterDate" parameterType="string" resultType="int">
-        select count(id) from t_order where orderDate &gt;= #{value}
+        select count(1) from t_order where orderDate &gt;= #{value}
     </select>
 
     <!--根据日期统计到诊数-->
     <select id="findVisitsCountByDate" parameterType="string" resultType="int">
-        select count(id) from t_order where orderDate = #{value} and orderStatus = '已到诊'
+        select count(1) from t_order where orderDate = #{value} and orderStatus = '已到诊'
     </select>
 
     <!--根据日期统计到诊数，统计指定日期之后的到诊数-->
     <select id="findVisitsCountAfterDate" parameterType="string" resultType="int">
-        select count(id) from t_order where orderDate &gt;= #{value} and orderStatus = '已到诊'
+        select count(1) from t_order where orderDate &gt;= #{value} and orderStatus = '已到诊'
     </select>
 
     <!--热门套餐，查询前5条-->

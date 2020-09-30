@@ -145,6 +145,19 @@
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
         </dependency>
+
+        <!-- 导入iText报表 -->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            
+        </dependency>
+        <!-- 导入iText报表，支持中文 -->
+        <dependency>
+            <groupId>com.alpha</groupId>
+            <artifactId>itextasian</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>
