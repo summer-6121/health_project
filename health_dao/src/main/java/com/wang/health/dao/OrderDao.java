@@ -1,6 +1,7 @@
 package com.wang.health.dao;
 
 import com.wang.health.pojo.Order;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,7 @@ public interface OrderDao {
      * @param id
      * @return
      */
-    Map<String, String> findById4Detail(Integer id);
+    Map<String,String> findById4Detail(Integer id);
 
     /**
      * 某个日期的预约数量
@@ -58,5 +59,13 @@ public interface OrderDao {
      * 查询热门套餐
      * @return
      */
-    List<Map> findHotSetmeal();
+    List<Map<String,Object>> findHotSetmeal();
+
+    /**
+     * 统计日期范围内的预约数量
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    int findOrderCountBetweenDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 }

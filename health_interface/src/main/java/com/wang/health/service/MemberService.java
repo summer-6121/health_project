@@ -2,6 +2,8 @@ package com.wang.health.service;
 
 import com.wang.health.pojo.Member;
 
+import java.util.List;
+
 /**
  * @Author:WangLiPeng
  * @Date:2020/9/28', 0028 20:26:45
@@ -20,4 +22,10 @@ public interface MemberService {
      * @param member
      */
     void add(Member member);
+
+    /**
+     * 统计过去1年每个月的会员总数量
+     * @return
+     */
+    List<Integer> getMemberReport(List<String> months);
 }

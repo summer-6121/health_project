@@ -6,6 +6,7 @@ import com.wang.health.entity.QueryPageBean;
 import com.wang.health.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:WangLiPeng
@@ -73,4 +74,10 @@ public interface SetmealService {
      * @return
      */
     Setmeal findDetailById(int id);
+
+    /**
+     * 统计套餐预约个数
+     * @return
+     */
+    List<Map<String,Object>> getSetmealReport();
 }

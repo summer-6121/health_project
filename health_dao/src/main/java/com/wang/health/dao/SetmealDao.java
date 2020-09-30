@@ -5,6 +5,7 @@ import com.wang.health.pojo.Setmeal;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:WangLiPeng
@@ -77,4 +78,10 @@ public interface SetmealDao {
      * @return
      */
     Setmeal findDetailById(int id);
+
+    /**
+     * 统计套餐预约个数
+     * @return
+     */
+    List<Map<String,Object>> getSetmealReport();
 }

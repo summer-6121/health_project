@@ -124,4 +124,14 @@
         </collection>
     </resultMap>
 
+    <!--统计套餐预约的个数-->
+    <!--<select id="getSetmealReport" resultType="list">
+        <!-select s.name,count(1) value from t_setmeal s, t_order o-->
+        <!--where s.id=o.setmeal_id group by s.id,s.name-->
+    <!--</select>&ndash;&gt;-->
+    <select id="getSetmealReport" resultType="map">
+        select s.name,t.value from t_setmeal s, (
+            select setmeal_id,count(1) value from t_order group by setmeal_id
+        ) t where s.id=t.setmeal_id
+    </select>
 </mapper>
